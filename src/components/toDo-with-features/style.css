@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #393939;
+}
+
+.todoContainer {
+    max-width: 500px;
+    width: 100%;
+    height: 500px;
+
+    padding: 0 20px;
+    margin: 50px auto 0 auto;
+}
+.todoContainer ul {
+    margin-bottom: 0;
+    max-height: 340px;
+    overflow-y: scroll;
+}
+.todoContainer ul {
+    margin-bottom: 0;
+    max-height: 340px;
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+
+.listItemsContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(199, 199, 199);
+    padding: 6px 15px 6px 10px;
+}
+
+.deleteButton {
+    font-size: 13px;
+    cursor: pointer;
+}
+.Input {
+    height: 27.74px;
+
+    width: 85%;
+    outline: none;
+    padding-left: 8px;
+}
+.Input:last-child {
+    width: 100%;
+}
+.Input::placeholder {
+    font-size: 13px;
+}
+.adderButton {
+    width: 15%;
+    border: none;
+    font-size: 13px;
+    background-color: black;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+.searchPartDiv {
+    display: flex;
+    gap: 10px;
+    margin-top: 17px;
+    margin-bottom: 20px;
+    /* padding: 0 10px; */
+}
+.footerPart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #bececa;
+    padding: 10px 10px;
+    position: sticky;
+    top: 100%;
+}
+.footerButtonDiv {
+    display: flex;
+    gap: 10px;
+}
+.footerButtonDiv button {
+    background: transparent;
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.noBorder {
+    border: none;
+}
+.active {
+    border: 1px solid black;
+}
+.itemsCounter {
+    font-size: 14px;
+    color: rgb(116, 116, 116);
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+.itemsCounter p {
+    margin: 0;
+    vertical-align: middle;
+}
+.SearchIcon {
+    cursor: pointer;
+}
+.SearchIcon:hover {
+    color: red;
+}
+.itemsCounter p::before {
+    content: "";
+    display: inline-block;
+    height: 17px;
+    width: 1px;
+    background-color: rgb(163, 163, 163);
+    vertical-align: middle;
+    margin-right: 10px;
+}
