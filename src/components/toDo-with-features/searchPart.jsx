@@ -30,6 +30,13 @@ const SearchInput = () => {
     const [plans, setPlans] = useState(arr);
     const [isActive, setIsActive] = useState([]);
     const [searchItems, setSearchItems] = useState([]);
+    const [searchWord, setSearchWord] = useState("");
+    const [noResultAfterSearch, setResultAfterSearch] = useState([
+        {
+            id: 0,
+            title: "No result",
+        },
+    ]);
 
     const [addedText, setAddText] = useState("");
     const [isSearchIconClicked, setSearchIconClick] = useState(false);
@@ -49,11 +56,17 @@ const SearchInput = () => {
     };
 
     const handleSearch = (e) => {
+        setSearchWord(e);
         const searchFiltered = plans.filter((item) => {
             if (item.title.toLowerCase().includes(e.toLowerCase())) {
                 return item.title.toLowerCase().includes(e.toLowerCase());
             }
         });
+        if (searchFiltered.length === 0) {
+            setSearchItems(noResultAfterSearch);
+            return;
+        }
+
         setSearchItems(searchFiltered);
     };
 
@@ -104,6 +117,7 @@ const SearchInput = () => {
                     isActive={isActive}
                     searchItems={searchItems}
                     setPlans={setPlans}
+                    searchWord={searchWord}
                 />
                 <FooterNavPart
                     plans={plans}

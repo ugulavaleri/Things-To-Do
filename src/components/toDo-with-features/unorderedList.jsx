@@ -1,6 +1,12 @@
 import ListWrapper from "./listWrapper";
 
-const UnorderedList = ({ plans, isActive, searchItems, setPlans }) => {
+const UnorderedList = ({
+    plans,
+    isActive,
+    searchItems,
+    setPlans,
+    searchWord,
+}) => {
     let displayData;
     if (isActive.length > 0) {
         displayData = isActive;
@@ -15,14 +21,22 @@ const UnorderedList = ({ plans, isActive, searchItems, setPlans }) => {
             <div>
                 <ul style={{ padding: 0 }}>
                     {displayData.map((event) => {
-                        return (
-                            <ListWrapper
-                                key={event.id}
-                                event={event}
-                                plans={plans}
-                                setPlans={setPlans}
-                            />
-                        );
+                        if (event.title !== "No result") {
+                            return (
+                                <ListWrapper
+                                    key={event.id}
+                                    event={event}
+                                    plans={plans}
+                                    setPlans={setPlans}
+                                />
+                            );
+                        } else {
+                            return (
+                                <h1 key={event.id} className="noResultTitle">
+                                    {event.title}:"{searchWord}"
+                                </h1>
+                            );
+                        }
                     })}
                 </ul>
             </div>
