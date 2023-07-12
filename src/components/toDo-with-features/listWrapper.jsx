@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { GlobalContext } from "../../globalContexts/globalContext";
 
-const ListWrapper = ({ event, setPlans, plans }) => {
+const ListWrapper = ({ todo }) => {
+    const { plans, setPlans } = useContext(GlobalContext);
     const [isListItemHovered, setListItemHover] = useState(false);
 
     const handleMouseOver = () => {
@@ -11,7 +13,7 @@ const ListWrapper = ({ event, setPlans, plans }) => {
     };
 
     const handleDeleteButton = () => {
-        setPlans((prev) => prev.filter((e) => e.id !== event.id));
+        setPlans((prev) => prev.filter((e) => e.id !== todo.id));
     };
 
     const handleCheckboxChange = (id) => {
@@ -27,8 +29,8 @@ const ListWrapper = ({ event, setPlans, plans }) => {
     return (
         <>
             <li
-                key={event.id}
                 className="listItemsContainer"
+                style={{ textDecoration: todo.isActive ? "line-through" : "" }}
                 onMouseOver={handleMouseOver}
                 onMouseLeave={handleMouseLeave}
             >
@@ -42,11 +44,11 @@ const ListWrapper = ({ event, setPlans, plans }) => {
                 >
                     <input
                         type="checkbox"
-                        checked={event.isActive}
-                        id={event.id}
+                        checked={todo.isActive}
+                        id={todo.id}
                         onChange={(e) => handleCheckboxChange(e.target.id)}
                     />
-                    {event.title}
+                    {todo.title}
                 </div>
                 <div>
                     {isListItemHovered && (

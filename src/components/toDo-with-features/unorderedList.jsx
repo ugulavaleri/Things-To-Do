@@ -1,12 +1,10 @@
 import ListWrapper from "./listWrapper";
+import { useContext } from "react";
 
-const UnorderedList = ({
-    plans,
-    isActive,
-    searchItems,
-    setPlans,
-    searchWord,
-}) => {
+import { GlobalContext } from "../../globalContexts/globalContext";
+
+const UnorderedList = ({ searchWord }) => {
+    const { plans, isActive, searchItems } = useContext(GlobalContext);
     let displayData;
     if (isActive.length > 0) {
         displayData = isActive;
@@ -20,20 +18,13 @@ const UnorderedList = ({
         <>
             <div>
                 <ul style={{ padding: 0 }}>
-                    {displayData.map((event) => {
-                        if (event.title !== "No result") {
-                            return (
-                                <ListWrapper
-                                    key={event.id}
-                                    event={event}
-                                    plans={plans}
-                                    setPlans={setPlans}
-                                />
-                            );
+                    {displayData.map((todo) => {
+                        if (todo.title !== "No result") {
+                            return <ListWrapper key={todo.id} todo={todo} />;
                         } else {
                             return (
-                                <h1 key={event.id} className="noResultTitle">
-                                    {event.title}:"{searchWord}"
+                                <h1 key={todo.id} className="noResultTitle">
+                                    {todo.title}:"{searchWord}"
                                 </h1>
                             );
                         }

@@ -1,36 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import FooterNavPart from "./FooterNavPart";
 import UnorderedList from "./unorderedList";
+import { GlobalContext } from "../../globalContexts/globalContext";
 import "./style.css";
 
-const arr = [
-    {
-        id: 1,
-        title: "Javascript practice",
-        isActive: true,
-    },
-    {
-        id: 2,
-        title: "React",
-        isActive: true,
-    },
-    {
-        id: 3,
-        title: "Next js",
-        isActive: false,
-    },
-    {
-        id: 4,
-        title: "typescript",
-        isActive: false,
-    },
-];
-
 const SearchInput = () => {
-    const [plans, setPlans] = useState(arr);
-    const [isActive, setIsActive] = useState([]);
-    const [searchItems, setSearchItems] = useState([]);
+    const { plans, setPlans, setSearchItems } = useContext(GlobalContext);
     const [searchWord, setSearchWord] = useState("");
+
     const [noResultAfterSearch, setResultAfterSearch] = useState([
         {
             id: 0,
@@ -44,12 +21,12 @@ const SearchInput = () => {
     const handleChange = () => {
         if (addedText.trim() !== "") {
             setPlans([
-                ...plans,
                 {
                     id: plans.length + 1,
                     title: addedText,
                     isActive: false,
                 },
+                ...plans,
             ]);
         }
         setAddText("");
@@ -112,20 +89,10 @@ const SearchInput = () => {
                         </>
                     )}
                 </div>
-                <UnorderedList
-                    plans={plans}
-                    isActive={isActive}
-                    searchItems={searchItems}
-                    setPlans={setPlans}
-                    searchWord={searchWord}
-                />
+                <UnorderedList setPlans={setPlans} searchWord={searchWord} />
                 <FooterNavPart
                     plans={plans}
-                    isActive={isActive}
-                    searchItems={searchItems}
-                    setIsActive={setIsActive}
                     setSearchIconClick={setSearchIconClick}
-                    setSearchItems={setSearchItems}
                 />
             </div>
         </>

@@ -1,22 +1,18 @@
 import "./style.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { RiSearch2Line } from "react-icons/ri/";
+import { GlobalContext } from "../../globalContexts/globalContext";
 
-const FooterNavPart = ({
-    plans,
-    setIsActive,
-    setSearchIconClick,
-    setSearchItems,
-    isActive,
-    searchItems,
-}) => {
+const FooterNavPart = ({ setSearchIconClick }) => {
+    const { plans, setIsActive, isActive, searchItems, setSearchItems } =
+        useContext(GlobalContext);
+
     const [firstBtn, setFirstBtn] = useState(true);
     const [secondBtn, setSecondBtn] = useState(false);
 
     const handleFirstClick = () => {
         setFirstBtn(true);
         setSecondBtn(false);
-
         setIsActive([]);
     };
 
