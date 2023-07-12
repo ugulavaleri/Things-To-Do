@@ -26,20 +26,32 @@ const arr = [
 export const GlobalContext = createContext(arr);
 
 export function GlobalContextProvider({ children }) {
-    const [plans, setPlans] = useState(arr);
+    const [todos, setTodos] = useState(arr);
     const [isActive, setIsActive] = useState([]);
     const [searchItems, setSearchItems] = useState([]);
+    const [searchWord, setSearchWord] = useState("");
+    const [cloneTodos, setCloneTodos] = useState([]);
+    const [filterKeyWord, setFilterKeyWord] = useState("all");
+
+    let empty = [...todos];
 
     return (
         <GlobalContext.Provider
             value={{
                 arr,
-                plans,
-                setPlans,
+                todos,
+                setTodos,
                 isActive,
                 setIsActive,
                 searchItems,
                 setSearchItems,
+                searchWord,
+                setSearchWord,
+                cloneTodos,
+                setCloneTodos,
+                filterKeyWord,
+                setFilterKeyWord,
+                empty,
             }}
         >
             {children}

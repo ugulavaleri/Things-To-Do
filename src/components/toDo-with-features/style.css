@@ -39,6 +39,14 @@
     padding: 6px 15px 6px 10px;
 }
 
+.removeButton {
+    display: none;
+}
+
+.listItemsContainer:hover .removeButton {
+    display: inline-block;
+}
+
 .deleteButton {
     font-size: 13px;
     cursor: pointer;
@@ -128,4 +136,11 @@
 .noResultTitle {
     font-size: 15px;
     font-weight: 500;
+}
+
+.inner-listItemsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 }

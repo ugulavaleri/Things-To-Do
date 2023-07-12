@@ -1,64 +1,66 @@
 import { useState, useContext } from "react";
 import { GlobalContext } from "../../globalContexts/globalContext";
+import { handleFilterTodos } from "../../globalContexts/filterFunction";
 
 const ListWrapper = ({ todo }) => {
-    const { plans, setPlans } = useContext(GlobalContext);
-    const [isListItemHovered, setListItemHover] = useState(false);
+    const {
+        todos,
+        setTodos,
+        cloneTodos,
+        setCloneTodos,
+        setFilterKeyWord,
+        filterKeyWord,
+    } = useContext(GlobalContext);
 
-    const handleMouseOver = () => {
-        setListItemHover(true);
-    };
-    const handleMouseLeave = () => {
-        setListItemHover(false);
-    };
-
-    const handleDeleteButton = () => {
-        setPlans((prev) => prev.filter((e) => e.id !== todo.id));
+    // works
+    const handleRemoveTodo = () => {
+        setTodos((prev) =>
+            prev.filter((t) => {
+                return t.id !== todo.id;
+            })
+        );
     };
 
-    const handleCheckboxChange = (id) => {
-        const item = plans.map((e) => {
-            if (e.id === Number(id)) {
+    // works
+    const handleCheckboxChange = () => {
+        const item = todos.map((e) => {
+            if (e.id === todo.id) {
                 e.isActive = !e.isActive;
             }
             return e;
         });
-        setPlans(item);
+        setTodos(item);
     };
 
     return (
         <>
-            <li
-                className="listItemsContainer"
-                style={{ textDecoration: todo.isActive ? "line-through" : "" }}
-                onMouseOver={handleMouseOver}
-                onMouseLeave={handleMouseLeave}
-            >
+            <li className="listItemsContainer">
                 <div
                     style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 7,
+                        textDecoration: todo.isActive ? "line-through" : "",
                     }}
+                    className="inner-listItemsContainer"
                 >
                     <input
                         type="checkbox"
                         checked={todo.isActive}
-                        id={todo.id}
-                        onChange={(e) => handleCheckboxChange(e.target.id)}
+                        onChange={handleCheckboxChange}
                     />
                     {todo.title}
                 </div>
-                <div>
-                    {isListItemHovered && (
+                <div className="removeButton">
+                    <span className="deleteButton" onClick={handleRemoveTodo}>
+                        X
+                    </span>
+
+                    {/* {isListItemHovered && (
                         <span
                             className="deleteButton"
-                            onClick={handleDeleteButton}
+                            onClick={handleRemoveTodo}
                         >
                             X
                         </span>
-                    )}
+                    )} */}
                 </div>
             </li>
         </>

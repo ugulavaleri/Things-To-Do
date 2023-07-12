@@ -1,4 +1,4 @@
-import "./App.css";
+import "./components/toDo-with-features/style.css";
 import SearchInput from "./components/toDo-with-features/searchPart";
 import { GlobalContextProvider } from "./globalContexts/globalContext";
 

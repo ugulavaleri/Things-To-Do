@@ -1,37 +1,26 @@
-import "./style.css";
-import { useState, useContext } from "react";
+import { useContext, useEffect, memo } from "react";
 import { RiSearch2Line } from "react-icons/ri/";
 import { GlobalContext } from "../../globalContexts/globalContext";
+import { handleFilterTodos } from "../../globalContexts/filterFunction";
 
 const FooterNavPart = ({ setSearchIconClick }) => {
-    const { plans, setIsActive, isActive, searchItems, setSearchItems } =
-        useContext(GlobalContext);
+    const {
+        todos,
+        setCloneTodos,
+        cloneTodos,
+        setFilterKeyWord,
+        filterKeyWord,
+    } = useContext(GlobalContext);
 
-    const [firstBtn, setFirstBtn] = useState(true);
-    const [secondBtn, setSecondBtn] = useState(false);
-
-    const handleFirstClick = () => {
-        setFirstBtn(true);
-        setSecondBtn(false);
-        setIsActive([]);
-    };
-
-    let itemsNumber;
-    if (isActive.length > 0) {
-        itemsNumber = isActive;
-    } else if (searchItems.length > 0) {
-        itemsNumber = searchItems;
-    } else {
-        itemsNumber = plans;
-    }
-
-    const handleSecondClick = () => {
-        setFirstBtn(false);
-        setSecondBtn(true);
-
-        const activedItems = itemsNumber.filter((e) => e.isActive === true);
-        setIsActive(activedItems);
-    };
+    // for recover original array
+    useEffect(() => {
+        let filteredArray = handleFilterTodos(todos, filterKeyWord);
+        if (filterKeyWord !== "all") {
+            setCloneTodos(filteredArray);
+        } else {
+            setCloneTodos(todos);
+        }
+    }, [filterKeyWord, todos]);
 
     return (
         <div className="footerPart">
@@ -41,28 +30,22 @@ const FooterNavPart = ({ setSearchIconClick }) => {
                     className="SearchIcon"
                     onClick={() => {
                         setSearchIconClick((prev) => !prev);
-                        setSearchItems([]);
                     }}
                 />
 
-                <p>{itemsNumber.length} items left </p>
+                <p>{cloneTodos.length} items left </p>
             </div>
 
             <div className="footerButtonDiv">
-                <button
-                    className={firstBtn ? "active" : "noBorder"}
-                    onClick={handleFirstClick}
-                >
-                    All
-                </button>
-                <button
-                    className={secondBtn ? "active" : "noBorder"}
-                    onClick={handleSecondClick}
-                >
+                <button onClick={() => setFilterKeyWord("all")}>All</button>
+                <button onClick={() => setFilterKeyWord("active")}>
                     Active
+                </button>
+                <button onClick={() => setFilterKeyWord("completed")}>
+                    Completed
                 </button>
             </div>
         </div>
     );
 };
-export default FooterNavPart;
+export default memo(FooterNavPart);

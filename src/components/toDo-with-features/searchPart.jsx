@@ -2,11 +2,18 @@ import { useState, useContext } from "react";
 import FooterNavPart from "./FooterNavPart";
 import UnorderedList from "./unorderedList";
 import { GlobalContext } from "../../globalContexts/globalContext";
-import "./style.css";
 
 const SearchInput = () => {
-    const { plans, setPlans, setSearchItems } = useContext(GlobalContext);
-    const [searchWord, setSearchWord] = useState("");
+    const {
+        todos,
+        setTodos,
+        setSearchItems,
+        setSearchWord,
+        searchWord,
+        setCloneTodos,
+        cloneTodos,
+        empty,
+    } = useContext(GlobalContext);
 
     const [noResultAfterSearch, setResultAfterSearch] = useState([
         {
@@ -18,15 +25,15 @@ const SearchInput = () => {
     const [addedText, setAddText] = useState("");
     const [isSearchIconClicked, setSearchIconClick] = useState(false);
 
-    const handleChange = () => {
+    const handleAddTodo = () => {
         if (addedText.trim() !== "") {
-            setPlans([
+            setTodos([
                 {
-                    id: plans.length + 1,
+                    id: todos.length + 1,
                     title: addedText,
                     isActive: false,
                 },
-                ...plans,
+                ...todos,
             ]);
         }
         setAddText("");
@@ -34,7 +41,7 @@ const SearchInput = () => {
 
     const handleSearch = (e) => {
         setSearchWord(e);
-        const searchFiltered = plans.filter((item) => {
+        const searchFiltered = cloneTodos.filter((item) => {
             if (item.title.toLowerCase().includes(e.toLowerCase())) {
                 return item.title.toLowerCase().includes(e.toLowerCase());
             }
@@ -43,8 +50,7 @@ const SearchInput = () => {
             setSearchItems(noResultAfterSearch);
             return;
         }
-
-        setSearchItems(searchFiltered);
+        setCloneTodos(searchFiltered);
     };
 
     return (
@@ -81,7 +87,7 @@ const SearchInput = () => {
                                 value={addedText}
                             />
                             <button
-                                onClick={handleChange}
+                                onClick={handleAddTodo}
                                 className="adderButton"
                             >
                                 Add
@@ -89,11 +95,8 @@ const SearchInput = () => {
                         </>
                     )}
                 </div>
-                <UnorderedList setPlans={setPlans} searchWord={searchWord} />
-                <FooterNavPart
-                    plans={plans}
-                    setSearchIconClick={setSearchIconClick}
-                />
+                <UnorderedList searchWord={searchWord} />
+                <FooterNavPart setSearchIconClick={setSearchIconClick} />
             </div>
         </>
     );

@@ -1,24 +1,16 @@
 import ListWrapper from "./listWrapper";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 
 import { GlobalContext } from "../../globalContexts/globalContext";
 
 const UnorderedList = ({ searchWord }) => {
-    const { plans, isActive, searchItems } = useContext(GlobalContext);
-    let displayData;
-    if (isActive.length > 0) {
-        displayData = isActive;
-    } else if (searchItems.length > 0) {
-        displayData = searchItems;
-    } else {
-        displayData = plans;
-    }
+    const { cloneTodos } = useContext(GlobalContext);
 
     return (
         <>
             <div>
                 <ul style={{ padding: 0 }}>
-                    {displayData.map((todo) => {
+                    {cloneTodos.map((todo) => {
                         if (todo.title !== "No result") {
                             return <ListWrapper key={todo.id} todo={todo} />;
                         } else {
@@ -35,4 +27,4 @@ const UnorderedList = ({ searchWord }) => {
     );
 };
 
-export default UnorderedList;
+export default memo(UnorderedList);
