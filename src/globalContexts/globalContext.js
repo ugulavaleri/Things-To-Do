@@ -1,57 +1,33 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
+import { reducer } from "./reducer";
+import { todosData, statesObject } from "./defaultData";
 
-const arr = [
-    {
-        id: 1,
-        title: "Javascript practice",
-        isActive: true,
-    },
-    {
-        id: 2,
-        title: "React",
-        isActive: true,
-    },
-    {
-        id: 3,
-        title: "Next js",
-        isActive: false,
-    },
-    {
-        id: 4,
-        title: "typescript",
-        isActive: false,
-    },
-];
+export const GlobalContext = createContext(todosData);
 
-export const GlobalContext = createContext(arr);
+export const ACTIONS = {
+    ADDER_TEXT: "adderText",
+    ADD_TODO: "AddTodo",
+    CLEAR_INPUT: "clearInput",
+    REMOVE_TODO: "RemoveTodo",
+    CHECK_TODO: "CheckTodo",
+    SEARCH_TODO_WORD: "searchTodoWord",
+    FILL_TODOS_CLONE: "fillTodosClone",
+    FILTER_BY_BUTTON: "filterByButton",
+    FILTER_BY_ALL_BUTTON: "filterByAllButton",
+    FILTER_BY_ALL: "filterByall",
+    FILTER_BY_ACTIVE: "filterByActive",
+    FILTER_BY_COMPLETED: "filterBycompleted",
+};
 
 export function GlobalContextProvider({ children }) {
-    const [todos, setTodos] = useState(arr);
-    const [isActive, setIsActive] = useState([]);
-    const [searchItems, setSearchItems] = useState([]);
-    const [searchWord, setSearchWord] = useState("");
-    const [cloneTodos, setCloneTodos] = useState([]);
-    const [filterKeyWord, setFilterKeyWord] = useState("all");
-
-    let empty = [...todos];
+    const [state, dispatch] = useReducer(reducer, statesObject);
 
     return (
         <GlobalContext.Provider
             value={{
-                arr,
-                todos,
-                setTodos,
-                isActive,
-                setIsActive,
-                searchItems,
-                setSearchItems,
-                searchWord,
-                setSearchWord,
-                cloneTodos,
-                setCloneTodos,
-                filterKeyWord,
-                setFilterKeyWord,
-                empty,
+                dispatch,
+                state,
+                ACTIONS,
             }}
         >
             {children}

@@ -4,23 +4,23 @@ import { GlobalContext } from "../../globalContexts/globalContext";
 import { handleFilterTodos } from "../../globalContexts/filterFunction";
 
 const FooterNavPart = ({ setSearchIconClick }) => {
-    const {
-        todos,
-        setCloneTodos,
-        cloneTodos,
-        setFilterKeyWord,
-        filterKeyWord,
-    } = useContext(GlobalContext);
+    const { state, dispatch, ACTIONS } = useContext(GlobalContext);
 
     // for recover original array
     useEffect(() => {
-        let filteredArray = handleFilterTodos(todos, filterKeyWord);
-        if (filterKeyWord !== "all") {
-            setCloneTodos(filteredArray);
+        let filteredArray = handleFilterTodos(state.todos, state.filterKeyWord);
+        if (state.filterKeyWord !== "all") {
+            dispatch({
+                type: ACTIONS.FILTER_BY_BUTTON,
+                payload: { filteredArray: filteredArray },
+            });
         } else {
-            setCloneTodos(todos);
+            dispatch({
+                type: ACTIONS.FILTER_BY_ALL_BUTTON,
+                payload: { filteredArray: state.todos },
+            });
         }
-    }, [filterKeyWord, todos]);
+    }, [state.filterKeyWord, state.todos]);
 
     return (
         <div className="footerPart">
@@ -33,15 +33,41 @@ const FooterNavPart = ({ setSearchIconClick }) => {
                     }}
                 />
 
-                <p>{cloneTodos.length} items left </p>
+                <p>{state.cloneTodos.length} items left </p>
             </div>
 
             <div className="footerButtonDiv">
-                <button onClick={() => setFilterKeyWord("all")}>All</button>
-                <button onClick={() => setFilterKeyWord("active")}>
+                <button
+                    className="btn"
+                    onClick={() =>
+                        dispatch({
+                            type: ACTIONS.FILTER_BY_ALL,
+                            payload: { keyWord: "all" },
+                        })
+                    }
+                >
+                    All
+                </button>
+                <button
+                    className="btn"
+                    onClick={() =>
+                        dispatch({
+                            type: ACTIONS.FILTER_BY_ACTIVE,
+                            payload: { keyWord: "active" },
+                        })
+                    }
+                >
                     Active
                 </button>
-                <button onClick={() => setFilterKeyWord("completed")}>
+                <button
+                    className="btn"
+                    onClick={() =>
+                        dispatch({
+                            type: ACTIONS.FILTER_BY_COMPLETED,
+                            payload: { keyWord: "completed" },
+                        })
+                    }
+                >
                     Completed
                 </button>
             </div>

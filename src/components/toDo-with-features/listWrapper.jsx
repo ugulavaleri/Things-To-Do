@@ -1,35 +1,15 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { GlobalContext } from "../../globalContexts/globalContext";
-import { handleFilterTodos } from "../../globalContexts/filterFunction";
 
 const ListWrapper = ({ todo }) => {
-    const {
-        todos,
-        setTodos,
-        cloneTodos,
-        setCloneTodos,
-        setFilterKeyWord,
-        filterKeyWord,
-    } = useContext(GlobalContext);
+    const { dispatch, ACTIONS } = useContext(GlobalContext);
 
-    // works
     const handleRemoveTodo = () => {
-        setTodos((prev) =>
-            prev.filter((t) => {
-                return t.id !== todo.id;
-            })
-        );
+        dispatch({ type: ACTIONS.REMOVE_TODO, payload: { id: todo.id } });
     };
 
-    // works
     const handleCheckboxChange = () => {
-        const item = todos.map((e) => {
-            if (e.id === todo.id) {
-                e.isActive = !e.isActive;
-            }
-            return e;
-        });
-        setTodos(item);
+        dispatch({ type: ACTIONS.CHECK_TODO, payload: { id: todo.id } });
     };
 
     return (
@@ -52,15 +32,6 @@ const ListWrapper = ({ todo }) => {
                     <span className="deleteButton" onClick={handleRemoveTodo}>
                         X
                     </span>
-
-                    {/* {isListItemHovered && (
-                        <span
-                            className="deleteButton"
-                            onClick={handleRemoveTodo}
-                        >
-                            X
-                        </span>
-                    )} */}
                 </div>
             </li>
         </>

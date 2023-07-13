@@ -2,56 +2,41 @@ import { useState, useContext } from "react";
 import FooterNavPart from "./FooterNavPart";
 import UnorderedList from "./unorderedList";
 import { GlobalContext } from "../../globalContexts/globalContext";
+import { useEffect } from "react";
 
 const SearchInput = () => {
-    const {
-        todos,
-        setTodos,
-        setSearchItems,
-        setSearchWord,
-        searchWord,
-        setCloneTodos,
-        cloneTodos,
-        empty,
-    } = useContext(GlobalContext);
-
-    const [noResultAfterSearch, setResultAfterSearch] = useState([
-        {
-            id: 0,
-            title: "No result",
-        },
-    ]);
-
-    const [addedText, setAddText] = useState("");
+    const { dispatch, state, ACTIONS } = useContext(GlobalContext);
     const [isSearchIconClicked, setSearchIconClick] = useState(false);
 
     const handleAddTodo = () => {
-        if (addedText.trim() !== "") {
-            setTodos([
-                {
-                    id: todos.length + 1,
-                    title: addedText,
+        if (state.adderText.trim() !== "") {
+            dispatch({
+                type: ACTIONS.ADD_TODO,
+                payload: {
+                    id: state.todos.length + 1,
+                    title: state.adderText,
                     isActive: false,
                 },
-                ...todos,
-            ]);
+            });
         }
-        setAddText("");
+        dispatch({ type: ACTIONS.CLEAR_INPUT });
     };
 
-    const handleSearch = (e) => {
-        setSearchWord(e);
-        const searchFiltered = cloneTodos.filter((item) => {
-            if (item.title.toLowerCase().includes(e.toLowerCase())) {
-                return item.title.toLowerCase().includes(e.toLowerCase());
+    useEffect(() => {
+        const filtered = state.todos.filter((todo) => {
+            if (
+                todo.title
+                    .toLowerCase()
+                    .includes(state.searchWord.toLowerCase())
+            ) {
+                return todo;
             }
         });
-        if (searchFiltered.length === 0) {
-            setSearchItems(noResultAfterSearch);
-            return;
-        }
-        setCloneTodos(searchFiltered);
-    };
+        dispatch({
+            type: ACTIONS.FILL_TODOS_CLONE,
+            payload: { filtered: filtered },
+        });
+    }, [state.searchWord]);
 
     return (
         <>
@@ -72,7 +57,13 @@ const SearchInput = () => {
                                 type="text"
                                 placeholder="Search.."
                                 className="Input"
-                                onChange={(e) => handleSearch(e.target.value)}
+                                value={state.searchWord}
+                                onChange={(e) =>
+                                    dispatch({
+                                        type: ACTIONS.SEARCH_TODO_WORD,
+                                        payload: { searchWord: e.target.value },
+                                    })
+                                }
                             />
                         </>
                     ) : (
@@ -80,11 +71,14 @@ const SearchInput = () => {
                             <input
                                 type="text"
                                 onChange={(e) => {
-                                    setAddText(e.target.value);
+                                    dispatch({
+                                        type: ACTIONS.ADDER_TEXT,
+                                        payload: { text: e.target.value },
+                                    });
                                 }}
                                 className="Input"
                                 placeholder="Add new.."
-                                value={addedText}
+                                value={state.adderText}
                             />
                             <button
                                 onClick={handleAddTodo}
@@ -95,7 +89,7 @@ const SearchInput = () => {
                         </>
                     )}
                 </div>
-                <UnorderedList searchWord={searchWord} />
+                <UnorderedList />
                 <FooterNavPart setSearchIconClick={setSearchIconClick} />
             </div>
         </>
